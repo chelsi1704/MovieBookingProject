@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600;700;800&display=swap');
+@import "tailwindcss";
+
+@layer base {
+  * {
+    @apply transition-colors duration-200;
+  }
+
+  body {
+    @apply bg-black text-white;
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  body.light {
+    @apply bg-white text-gray-900;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #1f2937;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #e50914;
+    border-radius: 9999px;
+  }
+}
+
+@layer components {
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+  }
+
+  .glass-modal {
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(229, 9, 20, 0.3);
+    border-radius: 16px;
+  }
+
+  .glass-nav {
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .btn-primary {
+    @apply text-white font-semibold
+           px-6 py-2.5 rounded-lg
+           hover:opacity-90 active:scale-95
+           transition-all duration-200
+           shadow-lg;
+
+    background: linear-gradient(135deg, #e50914, #ff6b6b);
+    box-shadow: 0 10px 25px rgba(229, 9, 20, 0.25);
+  }
+
+  .btn-ghost {
+    @apply border border-white/20 text-white
+           px-6 py-2.5 rounded-lg
+           hover:bg-white/10 active:scale-95
+           transition-all duration-200;
+  }
+
+  .glass-input {
+    @apply w-full px-4 py-3 rounded-lg
+           bg-white/5 border border-white/10
+           text-white;
+  }
+
+  .glass-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .light .glass-input {
+    @apply bg-gray-100 border-gray-200 text-gray-900;
+  }
+
+  .light .glass-input:focus {
+    border-color: rgba(229, 9, 20, 0.6);
+  }
+
+  .movie-card {
+    @apply relative overflow-hidden rounded-xl cursor-pointer
+           transition-all duration-300
+           hover:scale-105 hover:shadow-2xl;
+  }
+
+  .movie-card:hover {
+    box-shadow: 0 20px 40px rgba(229, 9, 20, 0.3);
+  }
+
+  .seat {
+    @apply w-8 h-8 rounded-t-lg cursor-pointer
+           transition-all duration-200 text-xs font-bold
+           flex items-center justify-center;
+  }
+
+  .seat-available {
+    @apply w-8 h-8 rounded-t-lg cursor-pointer
+           transition-all duration-200 text-xs font-bold
+           flex items-center justify-center
+           bg-green-500/80 hover:bg-green-400
+           hover:scale-110 hover:shadow-lg;
+  }
+
+  .seat-locked {
+    @apply w-8 h-8 rounded-t-lg cursor-not-allowed
+           transition-all duration-200 text-xs font-bold
+           flex items-center justify-center
+           bg-yellow-500/80 animate-pulse;
+  }
+
+  .seat-booked {
+    @apply w-8 h-8 rounded-t-lg cursor-not-allowed
+           transition-all duration-200 text-xs font-bold
+           flex items-center justify-center
+           bg-gray-600/80 opacity-60;
+  }
+
+  .seat-selected {
+    @apply w-8 h-8 rounded-t-lg cursor-pointer
+           transition-all duration-200 text-xs font-bold
+           flex items-center justify-center
+           shadow-lg scale-110;
+
+    background-color: #e50914;
+    box-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+  }
+
+  .star-filled {
+    @apply text-yellow-400;
+  }
+
+  .star-empty {
+    @apply text-gray-600;
+  }
+}
+
+@layer utilities {
+
+  .text-gradient {
+    background: linear-gradient(135deg, #e50914, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glow-red {
+    box-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+  }
+
+  .ticket-edge {
+    position: relative;
+  }
+
+  .ticket-edge::before,
+  .ticket-edge::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #0a0a0a;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .ticket-edge::before {
+    left: -10px;
+  }
+
+  .ticket-edge::after {
+    right: -10px;
+  }
+}
