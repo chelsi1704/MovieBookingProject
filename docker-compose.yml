@@ -1,0 +1,65 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: movie-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: movie_booking_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - movie-network
+    healthcheck:
+      test: ["CMD-SHELL", 'mysqladmin ping -h 127.0.0.1 -uroot -p"$${MYSQL_ROOT_PASSWORD}" --silent']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./movie-booking-backend/MovieTicketManagementPro/MovieTicketManagementPro
+      dockerfile: Dockerfile
+    container_name: movie-backend
+    ports:
+      - "8081:8081"
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/movie_booking_db
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      OAUTH2_REDIRECT_URI: http://localhost:3000/oauth2/callback
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - movie-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./movie-booking-frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:8081
+    container_name: movie-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - movie-network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+
+networks:
+  movie-network:
+    driver: bridge
